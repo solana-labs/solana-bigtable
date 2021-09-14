@@ -114,6 +114,7 @@ args=(
   --init-complete-file ~/.init-complete
   --wal-recovery-mode skip_any_corrupted_record
   --snapshots "$ledger_snapshots_dir"
+  --limit-ledger-size default 400000000
 )
 
 if ! [[ $(solana --version) =~ \ 1\.4\.[0-9]+ ]]; then
