@@ -1,0 +1,15 @@
+[Unit]
+Description=Solana Warehouse Uploader
+After=network.target
+Before=sol.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=sol
+ExecStart=<path_to_warehouse-upload-to-storage-bucket.sh>
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=sol.service

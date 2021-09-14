@@ -1,0 +1,18 @@
+[Unit]
+Description=Solana Warehouse Node
+After=network.target
+Wants=solana-sys-tuner.service
+Wants=solana-warehouse-upload.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=sol
+LimitNOFILE=65536
+LogRateLimitIntervalSec=0
+ExecStart=<path_to_warehouse.sh>
+
+[Install]
+WantedBy=multi-user.target
