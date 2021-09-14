@@ -57,7 +57,7 @@ In order to import Solana's Bigtable Instance, you'll first need to set own Bigt
 
 Alternatively, you create the tables by running the following commands through CLI:
 
-1. Update the `.cbtrc` file with credentials of the project and Bigtable instance on which we want to do the read and write operations:
+1. Update the `.cbtrc` file with credentials of the project and Bigtable instance in which we want to do the read and write operations:
     * `echo project = [PROJECT ID] > ~/.cbtrc`
     * `echo instance = [BIGTABLE INSTANCE ID] >> ~/.cbtrc`
     * `cat ~/.cbtr`
