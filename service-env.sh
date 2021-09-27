@@ -8,7 +8,7 @@ EXPECTED_GENESIS_HASH=5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d
 TRUSTED_VALIDATOR_PUBKEYS=(7Np41oeYqPefeNQEHSv1UDhYrehxin3NStELsSKCT4K2 GdnSyH3YtwcxFvQrVVJMm1JhTS4QVX7MFsX56uJLUfiZ DE1bawNcRJB9rVm3buyMVfr8mBEoyyu73NBovf2oXJsJ CakcnaRDHka2gXyfbEd2d3xsvkJkqsLw2akB3zsN1D2S)
 export SOLANA_METRICS_CONFIG=host=https://metrics.solana.com:8086,db=mainnet-beta,u=mainnet-beta_write,p=password
 PATH=<your_solana_bin_path>
-LEDGER_ARCHIVE_INTERVAL_MINUTES=720
+#MINIMUM_MINUTES_BETWEEN_ARCHIVE=720
 RPC_URL=https://api.mainnet-beta.solana.com
 ENTRYPOINT_HOST=mainnet-beta.solana.com
 ENTRYPOINT_PORT=8001
