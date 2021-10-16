@@ -42,9 +42,9 @@ Here you'll find all the necessary scripts to run your own Warehouse node:
 In order to import Solana's Bigtable Instance, you'll first need to set own Bigtable instance:
 
 1. Enable the `BigTable API` if you have not done it already, then click on the `Create Instance` inside the `Console`.
-2. Name your `Instance` and then Select Storage type from HDD and SSD (HDD recommended).
+2. Name your `Instance` and then Select Storage type from HDD and SSD. Set the instance id and name to `solana-ledger`.
 3. Select a location → Region → Zone.
-4. Choose the number of `Nodes` for the cluster, each node provides 8TB of storage (as of 09/12/21 at least 4 nodes are required).
+4. Choose the number of `Nodes` for the cluster, each node provides 16TB of storage for HDD nodes (as of 09/12/21 at least 4 HDD nodes are required).
 5. Create the following tables with the respective column family names:
 
 | Table ID   | Column Family Name |
