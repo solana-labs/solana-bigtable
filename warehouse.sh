@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+ledger_dir=<path_to_your_ledger>
+ledger_snapshots_dir=<path_to_your_ledger_snapshots>
+
 # |touch ~/warehouse-exit-signal| will trigger a clean shutdown
 exit_signal_file=~/warehouse-exit-signal
 
@@ -24,7 +27,7 @@ source ~/service-env.sh
 source ~/service-env-warehouse-*.sh
 
 # Delete any zero-length snapshots that can cause validator startup to fail
-find /home/sol/ledger-snapshots -name 'snapshot-*' -size 0 -print -exec rm {} \; || true
+find "$ledger_snapshots_dir" -name 'snapshot-*' -size 0 -print -exec rm {} \; || true
 
 #shellcheck source=./configure-metrics.sh
 source "$here"/configure-metrics.sh
@@ -59,9 +62,6 @@ fi
 if [[ -z $MINIMUM_MINUTES_BETWEEN_ARCHIVE ]]; then
   MINIMUM_MINUTES_BETWEEN_ARCHIVE=1
 fi
-
-ledger_dir=<path_to_your_ledger>
-ledger_snapshots_dir=<path_to_your_ledger_snapshots>
 
 if [[ -f $exit_signal_file ]]; then
   echo $exit_signal_file present, refusing to start
