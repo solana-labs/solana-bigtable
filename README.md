@@ -24,18 +24,46 @@ This guide is meant to allow anyone to run his own Bigtable instance for long te
 A Warehouse node is responsible for feeding Bigtable with ledger data, so setting up one is the first thing that needs to be done in order for you to have your own Solana Bigtable instance.
 Structurally a Warehouse node is similar to an RPC node that doesn't server RPC calls, but instead uploads ledger data to Bigtable.
 Keeping your ledger history consistent is very important on a Warehouse node, since any gap on your local ledger will translate to a gap on your Bigtable instance, although these gaps could be potentially patched up by using `solana-ledger-tool`.
-Here you'll find all the necessary scripts to run your own Warehouse node:
+Here you'll find all the necessary scripts to run your own Warehouse node.
 
+What different scripts do:
 1. `warehouse.sh` → Startup script for the Warehouse node:
-    * `ledger_dir=<path_to_your_ledger>`
-    * `ledger_snapshots_dir=<path_to_your_ledger_snapshots>`
-    * `identity_keypair=<path_to_your_identity_keypair>`
 2. `warehouse-upload-to-storage-bucket.sh` → Script to upload the hourly snapshots to Google Cloud Storage every epoch.
 3. `service-env.sh` → Source file for `warehouse.sh`.
-    * `GOOGLE_APPLICATION_CREDENTIALS=<path_to_your_google_cloud_credentials>`
 4. `service-env-warehouse.sh` → Source file for `warehouse-upload-to-storage-bucket.sh`.
-    * `ZONE=<availability_zone>`
-    * `STORAGE_BUCKET=<cloud_storage_bucket_name>`
+5. `warehouse-basic.sh` → Simplified command to start the warehouse node. Run this *instead* of `warehouse.sh`.
+
+Before you begin:
+1. [Install solana-cli](https://docs.solana.com/cli/install-solana-cli-tools)
+2. [Install gcloud sdk](https://cloud.google.com/sdk/docs/install)
+3. [Create a gcloud service account](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
+    * When creating the account give it the `Bigtable User` role.
+    * You will get back a file with a name similar to `play-gcp-329606-cccf2690b876.json`. This is the file you'll have to point the `GOOGLE_APPLICATION_CREDENTIALS` variable at (below).
+    * Needless to say keep the file private and don't commit to github.
+4. [Tune your system](https://docs.solana.com/running-validator/validator-start#system-tuning) 
+
+To start the validator:
+1. Fill in the missing variables (eg `<path_to_your_ledger>`) inside the below files. Hint: CTRL-F for "`<`" to find all quickly.
+    * `warehouse.sh`
+    * `service-env.sh`
+    * `service-env-warehouse.sh`
+2. If it's the first time you're running a validator, you can leave `ledger_dir` and `ledger_snapshots_dir` blank. This will tell the node to fetch genesis & the latest snapshot from the cluster. 
+2. `chmod +x` the following files:
+    * `warehouse.sh`
+    * `metrics-write-dashboard.sh`
+4. Update the `EXPECTED_SHRED_VERSION` in `service-env.sh` to the appropriate version.
+5. `./warehouse.sh`
+
+To upload to bigtable:
+1. Fill in the missing variables inside `<...>` in `warehouse-upload-to-storage-bucket.sh`.
+2. `chmod +x warehouse-upload-to-storage-bucket.sh`
+3. `./warehouse-upload-to-storage-bucket.sh`
+
+To run as a continuous process as `systemctl`:
+1. Update the user in both `.service` files (currently set to `sol`).
+2. Fill in the missing variables inside `<...>` in both `.service` files.
+3. `cp` both files into `/etc/systemd/system`
+4. `sudo systemctl enable --now warehouse-upload-to-storage-bucket && sudo systemctl enable --now warehouse`
 
 ## Setting up a Google Cloud Bigtable instance
 

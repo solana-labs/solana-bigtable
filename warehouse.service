@@ -10,7 +10,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=sol
-LimitNOFILE=65536
+LimitNOFILE=1000000
 LogRateLimitIntervalSec=0
 ExecStart=<path_to_warehouse.sh>
 
