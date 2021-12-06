@@ -6,6 +6,7 @@
  2. [Setting up a Google Cloud Bigtable instance](#setting-up-a-google-cloud-bigtable-instance)
  2. [Import Solana's Bigtable Instance](#import-solana's-bigtable-instance)
  2. [Requirements](#requirements)
+ 2. [Restoring Missing Blocks](#restoring-missing-blocks)
 
 ## Solana Bigtable
 
@@ -104,3 +105,38 @@ The import process is done through a Dataflow template that allows importing [Cl
 5. Fill the `Required parameters`.
 
 NOTE: As for now the migration process is on demand, so before creating the Dataflow job you'll need to send and email with the service account credentials you created `xxx@xxx.iam.gserviceaccount.com` to joe@solana.com or axl@solana.com.
+
+## Restoring Missing Blocks
+Sometimes blocks are missing from BigTable. This will be apparent on Explorer where the parent slot & child slot links won't form cycles. For example, before 59437028 was restored 59437027 incorrectly listed 59437029 as a child:
+
+* https://explorer.solana.com/block/59437029: parent is 59437028
+* https://explorer.solana.com/block/59437028: missing
+* https://explorer.solana.com/block/59437027: child is 59437029
+
+The missing blocks can be restored from GCS as follows:
+
+1. Download appropriate ledger data [from GCS](https://console.cloud.google.com/storage/browser?forceOnBucketsSortingFiltering=false&project=mainnet-beta&prefix=&forceOnObjectsSortingFiltering=false)
+    * Not all the region buckets have all the data, but [us-ny5](https://console.cloud.google.com/storage/browser/mainnet-beta-ledger-us-ny5;tab=objects?forceOnBucketsSortingFiltering=false&project=mainnet-beta&prefix=&forceOnObjectsSortingFiltering=false) is a good starting point
+    * Find the bucket with the largest slot number that is smaller than the missing block. For example block 59437028 is in [59183944](https://console.cloud.google.com/storage/browser/mainnet-beta-ledger-us-ny5/59183944?project=mainnet-beta&pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false)
+    * Download rocksdb.tar.bz2:
+      * `~/missingBlocks/59183944$ wget https://storage.googleapis.com/mainnet-beta-ledger-us-ny5/59183944/rocksdb.tar.bz2`
+    * Also note the version number in version.txt:
+      * `curl https://storage.googleapis.com/mainnet-beta-ledger-us-ny5/59183944/version.txt`
+        * `solana-ledger-tool 1.4.21 (src:50ebc3f4; feat:2221549166)`
+2. Extract the data
+    * `~/missingBlocks/59183944$ tar -I lbzip2 -xf rocksdb.tar.bz2`
+        * This can take a while so use a screen session if your connection is unstable.
+3. Build the ledger tool from the version listed in version.txt
+    * `~/solana$ git checkout 50ebc3f4` (can also checkout v1.4.21)
+    * `~/solana$ cd ledger-tool && ../cargo build --release`
+        * The cargo script in the solana repo uses the rust version associated with the release to solve backwards comptibility problems.
+4. Check blocks
+    * `~/missingBlocks/59183944$ ~/solana/target/release/solana-ledger-tool slot 59437028 -l . | head -n 2`
+        * Output should include correct parent & child. If you get a SlotNotRooted error see below.
+5. Upload missing block(s) to big table
+    * `~/missingBlocks/59183944$ GOOGLE_APPLICATION_CREDENTIALS=<json credentials file with write permission> ~/solana/target/release/solana-ledger-tool bigtable upload 59437028 59437028 -l .`
+        * Specify two blocks to upload a range. Earlier block (smaller number) first.
+        * `-l` should specify a directory that contains the rocksdb directory.
+6. If the previous steps proced a `SlotNotRooted` error, first run the repair-roots command.
+    * `~/missingBlocks/59183944$ ~/github/solana/target/release/solana-ledger-tool repair-roots --before 59437027 --until 59437029  -l .`
+        * If you get `error: Found argument 'repair-roots' which wasn't expected, or isn't valid in this context` then the ledger tool version pre-dates the repair-roots command. Add it to your local code by cherry picking `ddfbae2` or manually aplying the changes from [PR #17045](https://github.com/solana-labs/solana/pull/17045/files)
