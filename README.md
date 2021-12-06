@@ -129,7 +129,7 @@ The missing blocks can be restored from GCS as follows:
 3. Build the ledger tool from the version listed in version.txt
     * `~/solana$ git checkout 50ebc3f4` (can also checkout v1.4.21)
     * `~/solana$ cd ledger-tool && ../cargo build --release`
-        * The cargo script in the solana repo uses the rust version associated with the release to solve backwards comptibility problems.
+        * The cargo script in the solana repo uses the rust version associated with the release to solve backwards compatibility problems.
 4. Check blocks
     * `~/missingBlocks/59183944$ ~/solana/target/release/solana-ledger-tool slot 59437028 -l . | head -n 2`
         * Output should include correct parent & child. If you get a SlotNotRooted error see below.
@@ -137,6 +137,6 @@ The missing blocks can be restored from GCS as follows:
     * `~/missingBlocks/59183944$ GOOGLE_APPLICATION_CREDENTIALS=<json credentials file with write permission> ~/solana/target/release/solana-ledger-tool bigtable upload 59437028 59437028 -l .`
         * Specify two blocks to upload a range. Earlier block (smaller number) first.
         * `-l` should specify a directory that contains the rocksdb directory.
-6. If the previous steps proced a `SlotNotRooted` error, first run the repair-roots command.
+6. If the previous steps produced a `SlotNotRooted` error, first run the repair-roots command.
     * `~/missingBlocks/59183944$ ~/github/solana/target/release/solana-ledger-tool repair-roots --before 59437027 --until 59437029  -l .`
-        * If you get `error: Found argument 'repair-roots' which wasn't expected, or isn't valid in this context` then the ledger tool version pre-dates the repair-roots command. Add it to your local code by cherry picking `ddfbae2` or manually aplying the changes from [PR #17045](https://github.com/solana-labs/solana/pull/17045/files)
+        * If you get `error: Found argument 'repair-roots' which wasn't expected, or isn't valid in this context` then the ledger tool version pre-dates the repair-roots command. Add it to your local code by cherry picking `ddfbae2` or manually applying the changes from [PR #17045](https://github.com/solana-labs/solana/pull/17045/files)
