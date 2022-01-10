@@ -107,7 +107,7 @@ The import process is done through a Dataflow template that allows importing [Cl
 NOTE: As for now the migration process is on demand, so before creating the Dataflow job you'll need to send and email with the service account credentials you created `xxx@xxx.iam.gserviceaccount.com` to joe@solana.com or axl@solana.com.
 
 ## Restoring Missing Blocks
-Sometimes blocks are missing from BigTable. This will be apparent on Explorer where the parent slot & child slot links won't form cycles. For example, before 59437028 was restored 59437027 incorrectly listed 59437029 as a child:
+Sometimes blocks could be missing from your BigTable instnace. This will be apparent on Explorer where the parent slot & child slot links won't form cycles. For example, before 59437028 was restored 59437027 incorrectly listed 59437029 as a child:
 
 * https://explorer.solana.com/block/59437029: parent is 59437028
 * https://explorer.solana.com/block/59437028: missing
@@ -115,9 +115,12 @@ Sometimes blocks are missing from BigTable. This will be apparent on Explorer wh
 
 The missing blocks can be restored from GCS as follows:
 
-1. Download appropriate ledger data [from GCS](https://console.cloud.google.com/storage/browser?forceOnBucketsSortingFiltering=false&project=mainnet-beta&prefix=&forceOnObjectsSortingFiltering=false)
-    * Not all the region buckets have all the data, but [us-ny5](https://console.cloud.google.com/storage/browser/mainnet-beta-ledger-us-ny5;tab=objects?forceOnBucketsSortingFiltering=false&project=mainnet-beta&prefix=&forceOnObjectsSortingFiltering=false) is a good starting point
-    * Find the bucket with the largest slot number that is smaller than the missing block. For example block 59437028 is in [59183944](https://console.cloud.google.com/storage/browser/mainnet-beta-ledger-us-ny5/59183944?project=mainnet-beta&pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false)
+1. Download appropriate ledger data from one of these buckets based on your node's location:
+    * gs://mainnet-beta-ledger-us-ny5
+    * gs://mainnet-beta-ledger-europe-fr2
+    * gs://mainnet-beta-ledger-asia-sg1
+
+    * Find the bucket with the largest slot number that is smaller than the missing block. For example block 59437028 is in 59183944
     * Download rocksdb.tar.bz2:
       * `~/missingBlocks/59183944$ wget https://storage.googleapis.com/mainnet-beta-ledger-us-ny5/59183944/rocksdb.tar.bz2`
     * Also note the version number in version.txt:
