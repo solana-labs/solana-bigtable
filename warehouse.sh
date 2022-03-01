@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-PATH_TO_IDENTITY_KEY=$1
-PATH_TO_LEDGER_SNAPSHOTS=$2
+PATH_TO_LEDGER_DIR=$1
+PATH_TO_LEDGER_SNAPSHOT_DIR=$2
 PATH_TO_IDENTITY_KEYPAIR=$3
 PATH_TO_LOGS=$4
 
-ledger_dir=$PATH_TO_IDENTITY_KEY
-ledger_snapshots_dir=$PATH_TO_LEDGER_SNAPSHOTS
+ledger_dir=$PATH_TO_LEDGER_DIR
+ledger_snapshots_dir=$PATH_TO_LEDGER_SNAPSHOT_DIR
 
 # |touch ~/warehouse-exit-signal| will trigger a clean shutdown
 exit_signal_file=~/warehouse-exit-signal
