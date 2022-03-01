@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-ledger_dir=<path_to_your_ledger>
-ledger_snapshots_dir=<path_to_your_ledger_snapshots>
+PATH_TO_IDENTITY_KEY=$1
+PATH_TO_LEDGER_SNAPSHOTS=$2
+PATH_TO_IDENTITY_KEYPAIR=$3
+PATH_TO_LOGS=$4
+
+ledger_dir=$PATH_TO_IDENTITY_KEY
+ledger_snapshots_dir=$PATH_TO_LEDGER_SNAPSHOTS
 
 # |touch ~/warehouse-exit-signal| will trigger a clean shutdown
 exit_signal_file=~/warehouse-exit-signal
@@ -68,7 +73,7 @@ if [[ -f $exit_signal_file ]]; then
   exit 0
 fi
 
-identity_keypair=<path_to_your_identity_keypair>
+identity_keypair=$PATH_TO_IDENTITY_KEYPAIR
 identity_pubkey=$(solana-keygen pubkey "$identity_keypair")
 
 datapoint_error() {
@@ -105,7 +110,7 @@ args=(
   --private-rpc
   --identity "$identity_keypair"
   --ledger "$ledger_dir"
-  --log <path_to_your_logs>
+  --log $PATH_TO_LOGS
   --no-voting
   --skip-poh-verify
   --enable-rpc-transaction-history
