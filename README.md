@@ -39,8 +39,8 @@ Before you begin:
 2. [Install gcloud sdk](https://cloud.google.com/sdk/docs/install)
 3. [Create a gcloud service account](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
     * When creating the account give it the `Bigtable User` role.
-    * You will get back a file with a name similar to `play-gcp-329606-cccf2690b876.json`. This is the file you'll have to point the `GOOGLE_APPLICATION_CREDENTIALS` variable at (below).
-    * Needless to say keep the file private and don't commit to github.
+    * You will get back a file with a name similar to `play-gcp-329606-cccf2690b876.json`. Point `GOOGLE_APPLICATION_CREDENTIALS` variable to the file's path.
+    * Needless to say, keep the file private and don't commit to github.
 4. [Tune your system](https://docs.solana.com/running-validator/validator-start#system-tuning) 
 
 To start the validator:
@@ -104,10 +104,10 @@ The import process is done through a Dataflow template that allows importing [Cl
 4. Create the Dataflow job from template `SequenceFile Files on Cloud storage to Cloud BigTable`.
 5. Fill the `Required parameters`.
 
-NOTE: As for now the migration process is on demand, so before creating the Dataflow job you'll need to send and email with the service account credentials you created `xxx@xxx.iam.gserviceaccount.com` to joe@solana.com or axl@solana.com.
+NOTE: As for now the migration process is on demand, so before creating the Dataflow job you'll need to send an email with the service account credentials you created `xxx@xxx.iam.gserviceaccount.com` to joe@solana.com or axl@solana.com.
 
 ## Restoring Missing Blocks
-Sometimes blocks could be missing from your BigTable instnace. This will be apparent on Explorer where the parent slot & child slot links won't form cycles. For example, before 59437028 was restored 59437027 incorrectly listed 59437029 as a child:
+Sometimes blocks could be missing from your BigTable instance. This will be apparent on Explorer where the parent slot & child slot links won't form cycles. For example, before 59437028 was restored 59437027 incorrectly listed 59437029 as a child:
 
 * https://explorer.solana.com/block/59437029: parent is 59437028
 * https://explorer.solana.com/block/59437028: missing
@@ -135,7 +135,7 @@ The missing blocks can be restored from GCS as follows:
         * The cargo script in the solana repo uses the rust version associated with the release to solve backwards compatibility problems.
 4. Check blocks
     * `~/missingBlocks/59183944$ ~/solana/target/release/solana-ledger-tool slot 59437028 -l . | head -n 2`
-        * Output should include correct parent & child. If you get a SlotNotRooted error see below.
+        * Output should include the correct parent & child. If you get a SlotNotRooted error see below.
 5. Upload missing block(s) to big table
     * `~/missingBlocks/59183944$ GOOGLE_APPLICATION_CREDENTIALS=<json credentials file with write permission> ~/solana/target/release/solana-ledger-tool bigtable upload 59437028 59437028 -l .`
         * Specify two blocks to upload a range. Earlier block (smaller number) first.
