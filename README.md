@@ -97,7 +97,7 @@ Alternatively, you create the tables by running the following commands through C
 ## Import Solana's Bigtable Instance
 
 Once your Warehouse node has stored ledger data for 1 epoch successfully and you have set up your Bigtable instance as explained above, you are ready to import Solana's Bigtable to yours.
-The import process is done through a Dataflow template that allows importing [Cloud Storage SequenceFile to Bigtable](https://cloud.google.com/dataflow/docs/guides/templates/provided-batch#expandable-11):
+The import process is done through a Dataflow template that allows importing [Cloud Storage SequenceFile to Bigtable](https://cloud.google.com/dataflow/docs/guides/templates/provided-batch#cloud-storage-sequencefile-to-bigtable):
 1. Create a new `Service Account`.
 2. Assign a `Service Account Admin` role to it.
 3. Enabling the `Dataflow API` in the project.
