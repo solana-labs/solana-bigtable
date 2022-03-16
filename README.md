@@ -100,11 +100,11 @@ Once your Warehouse node has stored ledger data for 1 epoch successfully and you
 The import process is done through a Dataflow template that allows importing [Cloud Storage SequenceFile to Bigtable](https://cloud.google.com/dataflow/docs/guides/templates/provided-batch#cloud-storage-sequencefile-to-bigtable):
 1. Create a new `Service Account`.
 2. Assign a `Service Account Admin` role to it.
-3. Enabling the `Dataflow API` in the project.
-4. Create the Dataflow job from template `SequenceFile Files on Cloud storage to Cloud BigTable`.
-5. Fill the `Required parameters`.
+3. Enable the `Dataflow API` in the project.
+4. Create the Dataflow job from the `SequenceFile Files on Cloud Storage to Cloud BigTable` template.
+5. Fill in the `Required parameters` (we will share the Cloud Storage storage path with you).
 
-NOTE: As for now the migration process is on demand, so before creating the Dataflow job you'll need to send an email with the service account credentials you created `xxx@xxx.iam.gserviceaccount.com` to joe@solana.com or axl@solana.com.
+NOTE: Before creating the Dataflow job, you'll need to send the email address of the Service Account you created (i.e., `xxx@xxx.iam.gserviceaccount.com`) to joe@solana.com or axl@solana.com.
 
 ## Restoring Missing Blocks
 Sometimes blocks could be missing from your BigTable instance. This will be apparent on Explorer where the parent slot & child slot links won't form cycles. For example, before 59437028 was restored 59437027 incorrectly listed 59437029 as a child:
