@@ -129,6 +129,7 @@ The missing blocks can be restored from GCS as follows:
 2. Extract the data
     * `~/missingBlocks/59183944$ tar -I lbzip2 -xf rocksdb.tar.bz2`
         * This can take a while so use a screen session if your connection is unstable.
+        * More recent epochs have the ledger comrpes with zstd so you should use `tar --use-compress-program=unzstd -xvf rocksdb.tar.zst instead`
 3. Build the ledger tool from the version listed in version.txt
     * `~/solana$ git checkout 50ebc3f4` (can also checkout v1.4.21)
     * `~/solana$ cd ledger-tool && ../cargo build --release`
