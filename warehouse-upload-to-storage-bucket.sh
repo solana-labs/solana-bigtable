@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+PATH_TO_IDENTITY_KEYPAIR=$1
+
 set -x
 set -e
 shopt -s nullglob
@@ -25,7 +27,7 @@ if [[ -z $STORAGE_BUCKET ]]; then
   exit 1
 fi
 
-identity_keypair=<path_to_your_identity_keypair>
+identity_keypair=$PATH_TO_IDENTITY_KEYPAIR
 identity_pubkey=$(solana-keygen pubkey "$identity_keypair")
 
 datapoint_error() {
