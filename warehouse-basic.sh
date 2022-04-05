@@ -1,4 +1,4 @@
-export PATH=<path-to-bin>
+export PATH=<path-to-bins>
 export GOOGLE_APPLICATION_CREDENTIALS=<path-to-bt-write-key>
 export SOLANA_METRICS_CONFIG="host=https://metrics.solana.com:8086,db=mainnet-beta,u=mainnet-beta_write,p=password"
 
