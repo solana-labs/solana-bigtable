@@ -41,14 +41,14 @@ Before you begin:
     * When creating the account give it the `Bigtable User` role.
     * You will get back a file with a name similar to `play-gcp-329606-cccf2690b876.json`. Point `GOOGLE_APPLICATION_CREDENTIALS` variable to the file's path.
     * Needless to say, keep the file private and don't commit to github.
-4. [Tune your system](https://docs.solana.com/running-validator/validator-start#system-tuning) 
+4. [Tune your system](https://docs.solana.com/running-validator/validator-start#system-tuning)
 
 To start the validator:
 1. Fill in the missing variables (eg `<path_to_your_ledger>`) inside the below files. Hint: CTRL-F for "`<`" to find all quickly.
     * `warehouse.sh`
     * `service-env.sh`
     * `service-env-warehouse.sh`
-2. If it's the first time you're running a validator, you can leave `ledger_dir` and `ledger_snapshots_dir` blank. This will tell the node to fetch genesis & the latest snapshot from the cluster. 
+2. If it's the first time you're running a validator, you can leave `ledger_dir` and `ledger_snapshots_dir` blank. This will tell the node to fetch genesis & the latest snapshot from the cluster.
 2. `chmod +x` the following files:
     * `warehouse.sh`
     * `metrics-write-dashboard.sh`
@@ -142,5 +142,5 @@ The missing blocks can be restored from GCS as follows:
         * Specify two blocks to upload a range. Earlier block (smaller number) first.
         * `-l` should specify a directory that contains the rocksdb directory.
 6. If the previous steps produced a `SlotNotRooted` error, first run the repair-roots command.
-    * `~/missingBlocks/59183944$ ~/github/solana/target/release/solana-ledger-tool repair-roots --before 59437027 --until 59437029  -l .`
+    * `~/missingBlocks/59183944$ ~/github/solana/target/release/solana-ledger-tool repair-roots --before 59437029 --until 59437027  -l .`
         * If you get `error: Found argument 'repair-roots' which wasn't expected, or isn't valid in this context` then the ledger tool version pre-dates the repair-roots command. Add it to your local code by cherry picking `ddfbae2` or manually applying the changes from [PR #17045](https://github.com/solana-labs/solana/pull/17045/files)
