@@ -72,7 +72,7 @@ while true; do
         if [[ ! -f "$archive_dir"/.bigtable ]]; then
           echo "Uploading $archive_dir to BigTable"
           SECONDS=
-          while ! timeout 48h solana-ledger-tool --ledger "$archive_dir" bigtable upload --allow-missing-metadata; do
+          while ! timeout 48h solana-ledger-tool --ledger "$archive_dir" bigtable upload; do
             echo "bigtable upload failed..."
             datapoint_error bigtable-upload-failure
             sleep 30
