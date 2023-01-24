@@ -34,6 +34,8 @@ What different scripts do:
 4. `service-env-warehouse.sh` → Source file for `warehouse-upload-to-storage-bucket.sh`.
 5. `warehouse-basic.sh` → Simplified command to start the warehouse node. Run this *instead* of `warehouse.sh`.
 
+**IMPORTANT NOTE:** If all you want is write to bigtable, you only need to use the `warehouse-basic.sh` script as a template. All of the scripts above are meant not only to write to bigtable but also create hourly snapshots and ledger backups every epoch and upload them to Google's Cloud Storage.
+
 Before you begin:
 1. [Install solana-cli](https://docs.solana.com/cli/install-solana-cli-tools)
 2. [Install gcloud sdk](https://cloud.google.com/sdk/docs/install)
