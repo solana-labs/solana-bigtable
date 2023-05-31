@@ -92,6 +92,15 @@ while true; do
     datapoint created-rocksdb-tar-bz2 "duration_secs=$SECONDS"
   done
 
+  for archive in ~/"$STORAGE_BUCKET"/*; do
+    SECONDS=
+    (
+      data-prep fil-data-prep --size 33285996544 --output "rocksdb" --metadata "$archive"-metadata.csv
+      echo Created car files in $SECONDS seconds
+    )
+    datapoint car-generation-complete "duration_secs=$SECONDS"
+  done
+
   if [[ ! -d ~/"$STORAGE_BUCKET" ]]; then
     echo "Nothing to upload, ~/$STORAGE_BUCKET does not exist"
     sleep 60m
