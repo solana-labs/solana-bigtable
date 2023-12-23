@@ -81,8 +81,11 @@ In order to import Solana's Bigtable Instance, you'll first need to set own Bigt
 | Table ID   | Column Family Name |
 | :--------- | :----------------: |
 | blocks     | x                  |
+| entries    | x                  |
 | tx         | x                  |
 | tx-by-addr | x                  |
+
+**NOTE:** the `entries` table is new and will be populated as of solana CLI tools v1.18.0
 
 6. It's very important to give the same `Table ID` and `Column Family Name` inside your Bigtable instance or the Dataflow job will fail.
 
