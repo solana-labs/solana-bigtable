@@ -83,6 +83,28 @@ while true; do
         fi
       fi
 
+      if [[ -n $OLD_FAITHFUL ]]; then
+        EPOCH=`cat $archive_dir/epoch | tr -d '\n'`
+        if [[ ! -f "$archive_dir"/.old-faithful ]]; then
+          if ! timeout 2h radiance car create2 "$EPOCH" --db=$rocksdb --out="$archive_dir/epoch-$EPOCH.car" --check; then
+            echo "This epoch does not have access to a full set of slots from the epoch."
+            datapoint_error old-faithful-generation-slots-missing
+          else
+            echo "Generating epoch-$EPOCH.car from $archive_dir"
+            SECONDS=
+            while ! timeout 48h radiance car create2 $EPOCH --db=$rocksdb --out="$archive_dir/epoch-$EPOCH.car"; do
+              echo "old faithful generation failed..."
+              datapoint_error old-faithful-generation-failure
+              sleep 30
+            done
+            touch "$archive_dir"/.old-faithful
+
+            echo Car generation took $SECONDS seconds
+            datapoint old-faithful-generation-complete "duration_secs=$SECONDS"
+          fi
+        fi
+      fi
+
       echo "Creating rocksdb.tar.bz2 in $archive_dir"
       rm -rf rocksdb.tar.bz2
       tar jcf rocksdb.tar.bz2 rocksdb
