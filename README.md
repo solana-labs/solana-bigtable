@@ -109,7 +109,7 @@ The import process is done through a Dataflow template that allows importing [Cl
 4. Create the Dataflow job from the `SequenceFile Files on Cloud Storage to Cloud BigTable` template.
 5. Fill in the `Required parameters` (we will share the Cloud Storage storage path with you).
 
-NOTE: Before creating the Dataflow job, you'll need to send the email address of the Service Account you created (i.e., `xxx@xxx.iam.gserviceaccount.com`) to joe@solana.com or axl@solana.com.
+NOTE: Before creating the Dataflow job, you'll need to send the email address of the Service Account you created (i.e., `xxx@xxx.iam.gserviceaccount.com`) to joe@solana.com.
 
 ## Restoring Missing Blocks
 Sometimes blocks could be missing from your BigTable instance. This will be apparent on Explorer where the parent slot & child slot links won't form cycles. For example, before 59437028 was restored 59437027 incorrectly listed 59437029 as a child:
